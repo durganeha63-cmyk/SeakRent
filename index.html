@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SeakRent – Rent Anything in India</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;background:#0b1120;color:#e5e7eb}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:1160px;margin:0 auto;padding:0 16px}
+
+    /* NAVBAR */
+    nav{position:fixed;top:0;left:0;width:100%;z-index:50;
+        background:rgba(15,23,42,.95);backdrop-filter:blur(8px);
+        border-bottom:1px solid rgba(148,163,184,.4)}
+    nav .inner{display:flex;align-items:center;justify-content:space-between;padding:10px 16px}
+    .logo{font-size:20px;font-weight:700;letter-spacing:.04em;color:#facc15;cursor:pointer}
+    .nav-links{list-style:none;display:flex;gap:14px;font-size:13px}
+    .nav-links a:hover{color:#facc15}
+    .right-controls{display:flex;gap:10px;align-items:center}
+    select{background:#020617;color:#e5e7eb;border:1px solid #4b5563;
+           border-radius:999px;padding:4px 8px;font-size:11px;cursor:pointer}
+    .btn{padding:7px 14px;border-radius:999px;border:none;cursor:pointer;
+         font-size:12px;font-weight:600;transition:all 0.3s}
+    .btn-outline{background:transparent;color:#e5e7eb;border:1px solid #9ca3af}
+    .btn-outline:hover{background:rgba(249,250,251,0.1);border-color:#facc15}
+    .btn-gold{background:#facc15;color:#111827}
+    .btn-gold:hover{background:#e5b909;transform:translateY(-2px);box-shadow:0 4px 12px rgba(250,204,21,0.3)}
+    .btn-green{background:#22c55e;color:#022c22}
+    .btn-green:hover{background:#16a34a}
+    .user-badge{display:flex;align-items:center;gap:6px;font-size:12px;background:rgba(30,64,175,0.3);padding:4px 10px;border-radius:999px;border:1px solid rgba(59,130,246,0.5)}
+    .user-badge i{color:#facc15}
+
+    /* SECTIONS */
+    section{padding:80px 0}
+    .section-title{text-align:center;font-size:24px;margin-bottom:6px;color:#f9fafb}
+    .section-sub{text-align:center;font-size:13px;color:#9ca3af;margin-bottom:22px}
+
+    /* HERO */
+    .hero{padding-top:76px;
+          background:radial-gradient(circle at top,#1d4ed8,#020617);}
+    .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;align-items:center}
+    .hero-title{font-size:30px;margin-bottom:10px}
+    .hero-text{font-size:14px;margin-bottom:14px;max-width:520px}
+    .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;font-size:11px}
+    .tag{border-radius:999px;border:1px solid rgba(148,163,184,.7);
+         padding:3px 10px;background:rgba(15,23,42,.7);display:flex;align-items:center;gap:4px}
+    .hero-card{background:rgba(15,23,42,.9);border-radius:14px;padding:14px;
+               border:1px solid rgba(148,163,184,.6);font-size:12px}
+    .hero-stat{display:flex;justify-content:space-between;font-size:12px;margin-top:4px}
+
+    /* ABOUT US */
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
+    .about-card{background:#020617;border-radius:12px;padding:16px;border:1px solid #27272f}
+    .team-member{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px;background:rgba(15,23,42,0.5);border-radius:8px}
+    .team-avatar{width:40px;height:40px;border-radius:50%;background:#1d4ed8;display:flex;align-items:center;justify-content:center;font-weight:bold}
+    .team-info{flex:1}
+    .team-role{font-size:11px;color:#9ca3af}
+
+    /* PRICING (short) */
+    .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+           gap:12px;font-size:13px}
+    .plan{background:#020617;border-radius:12px;padding:12px;
+          border:1px solid #27272f;transition:all 0.3s;position:relative}
+    .plan:hover{transform:translateY(-5px);border-color:#facc15;box-shadow:0 8px 20px rgba(15,23,42,0.5)}
+    .plan-name{font-weight:600;margin-bottom:4px}
+    .plan-price{font-size:22px;font-weight:700;margin:4px 0}
+    .plan ul{list-style:none;font-size:12px}
+    .plan ul li{margin-bottom:3px}
+    .badge{display:inline-block;background:#22c55e;color:#022c22;
+           font-size:10px;padding:2px 8px;border-radius:999px;margin-left:6px}
+    .plan-btn{width:100%;margin-top:10px;font-size:11px;padding:6px}
+    .plan-disabled{opacity:0.6;cursor:not-allowed}
+    .plan-disabled .plan-btn{background:#6b7280;cursor:not-allowed}
+
+    /* PRODUCTS PREVIEW */
+    .search-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+                margin-bottom:10px;font-size:12px}
+    .search-row input{flex:1;min-width:200px;padding:6px 10px;border-radius:999px;
+                      border:1px solid #4b5563;background:#020617;color:#e5e7eb}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+                   gap:10px;font-size:12px}
+    .product{background:#020617;border-radius:10px;border:1px solid #27272f;
+             padding:10px;transition:all 0.3s}
+    .product:hover{border-color:#facc15;transform:translateY(-3px)}
+    .product-head{display:flex;justify-content:space-between;margin-bottom:4px}
+    .product-title{font-weight:600}
+    .product-price{font-weight:700;color:#4ade80}
+    .product-meta{font-size:11px;color:#9ca3af;margin-bottom:4px}
+    .product-actions{display:flex;gap:6px;margin-top:8px}
+    .review-stars{color:#facc15;font-size:11px;margin:4px 0}
+    .rent-status{padding:4px 8px;border-radius:6px;font-size:10px;font-weight:600;margin-top:6px}
+    .rent-pending{background:rgba(251,191,36,0.2);color:#fbbf24;border:1px solid #fbbf24}
+    .rent-success{background:rgba(34,197,94,0.2);color:#22c55e;border:1px solid #22c55e}
+    .rent-failed{background:rgba(239,68,68,0.2);color:#ef4444;border:1px solid #ef4444}
+
+    /* CONTACT */
+    .contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:14px;font-size:13px}
+    .card{background:#020617;border-radius:12px;border:1px solid #27272f;padding:12px}
+    .form-group{margin-bottom:8px}
+    .form-group label{display:block;font-size:11px;margin-bottom:3px;color:#9ca3af}
+    .form-group input,.form-group textarea,.form-group select{
+      width:100%;padding:6px 8px;border-radius:6px;border:1px solid #4b5563;
+      background:#020617;color:#e5e7eb;font-size:12px}
+    textarea{resize:vertical;min-height:60px}
+    .small{font-size:11px;color:#9ca3af}
+
+    /* UPLOAD PRODUCT */
+    .upload-section{display:none}
+    .upload-active{display:block}
+    .upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .upload-preview{background:#020617;border-radius:10px;padding:12px;border:1px dashed #4b5563;text-align:center}
+    .upload-preview img{max-width:100%;border-radius:8px;margin-top:10px;display:none}
+
+    /* MODALS */
+    .backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;
+              align-items:center;justify-content:center;z-index:60}
+    .modal{background:#020617;border-radius:12px;border:1px solid #27272f;
+           padding:14px;width:95%;max-width:450px;font-size:13px}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;
+                  margin-bottom:8px}
+    .close{cursor:pointer;font-size:18px;color:#e5e7eb}
+    .modal-btns{display:flex;gap:8px;margin-top:12px}
+
+    /* RENT PAYMENT MODAL */
+    .rent-payment-details{border:1px solid #3b82f6;border-radius:8px;padding:12px;margin-bottom:12px;background:rgba(30,64,175,0.1)}
+    .payment-instructions{background:rgba(15,23,42,0.5);border-radius:6px;padding:10px;margin-top:10px}
+    .payment-step{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+    .step-number{width:24px;height:24px;border-radius:50%;background:#3b82f6;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+    .upi-qr{text-align:center;padding:15px;background:white;border-radius:8px;margin:10px 0}
+    .upi-qr img{max-width:180px;height:180px;display:block;margin:0 auto}
+    .payment-status{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:8px;margin-top:10px}
+    .status-pending{background:rgba(251,191,36,0.1);border:1px solid #fbbf24;color:#fbbf24}
+    .status-success{background:rgba(34,197,94,0.1);border:1px solid #22c55e;color:#22c55e}
+    .payment-timer{font-size:18px;font-weight:bold;text-align:center;margin:10px 0;color:#facc15}
+
+    /* PAYMENT VERIFICATION MODAL SPECIFIC */
+    .payment-guidelines{background:rgba(30,64,175,0.2);border:1px solid #3b82f6;border-radius:8px;padding:10px;margin-bottom:12px}
+    .guideline-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:11px}
+    .guideline-icon{color:#facc15;flex-shrink:0;margin-top:2px}
+    .validation-results{margin-top:10px;padding:10px;background:rgba(15,23,42,0.5);border-radius:6px}
+    .validation-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:11px}
+    .validation-pass{color:#22c55e}
+    .validation-fail{color:#ef4444}
+    .validation-pending{color:#9ca3af}
+    .screenshot-requirements{font-size:10px;color:#9ca3af;margin-top:4px}
+
+    /* PAYMENT SECTION */
+    .payment-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+    .payment-option{border:1px solid #4b5563;border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:all 0.3s}
+    .payment-option:hover{border-color:#facc15;background:rgba(250,204,21,0.05)}
+    .payment-option.selected{border-color:#22c55e;background:rgba(34,197,94,0.1)}
+    .payment-icon{font-size:24px;margin-bottom:6px}
+    .upi-icon{color:#0d47a1}
+    .card-icon{color:#c2185b}
+    .netbanking-icon{color:#ff9800}
+
+    /* PAYMENT VERIFICATION SECTION */
+    .verification-status{padding:12px;border-radius:8px;margin-bottom:16px}
+    .status-pending{background:rgba(251,191,36,0.1);border:1px solid #fbbf24}
+    .status-verified{background:rgba(34,197,94,0.1);border:1px solid #22c55e}
+    .verification-steps{display:flex;flex-direction:column;gap:12px}
+    .verification-step{display:flex;align-items:center;gap:10px;padding:10px;background:#020617;border-radius:8px}
+    .step-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold}
+    .step-complete{background:#22c55e;color:#022c22}
+    .step-pending{background:#6b7280;color:#e5e7eb}
+    .step-current{background:#facc15;color:#111827}
+
+    /* FOOTER */
+    footer{background:#020617;border-top:1px solid #27272f;
+           padding:14px 0;font-size:12px;color:#9ca3af}
+    footer .container{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}
+    .footer-links{display:flex;gap:12px}
+    .footer-links a:hover{color:#facc15}
+
+    /* NOTIFICATION */
+    .notification{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#022c22;
+                  padding:10px 16px;border-radius:8px;font-size:13px;z-index:70;
+                  display:none;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+    .notification.error{background:#ef4444;color:#fef2f2}
+    .notification.warning{background:#fbbf24;color:#422006}
+    .notification.info{background:#3b82f6;color:#dbeafe}
+
+    /* ACTIVE USERS COUNTER */
+    .active-users{position:fixed;bottom:80px;right:20px;background:rgba(30,64,175,0.9);color:white;
+                  padding:8px 12px;border-radius:8px;font-size:12px;z-index:65;
+                  display:flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,0.3);
+                  backdrop-filter:blur(4px)}
+    .users-icon{color:#facc15}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero-grid{grid-template-columns:1fr}
+      .about-grid{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .upload-grid{grid-template-columns:1fr}
+      .nav-links{display:flex}
+      .user-badge span{display:inline}
+      .active-users{display:none}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none}
+      .user-badge span{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="inner container">
+    <div class="logo" onclick="scrollToId('home')">SeakRent</div>
+    <ul class="nav-links">
+      <li><a href="#home" onclick="scrollToId('home')">Home</a></li>
+      <li><a href="#about" onclick="scrollToId('about')">About Us</a></li>
+      <li><a href="#pricing" onclick="scrollToId('pricing')">Plans</a></li>
+      <li><a href="#browse" onclick="scrollToId('browse')">Browse</a></li>
+      <li><a href="#upload" onclick="openUploadSection()">Upload Product</a></li>
+      <li><a href="#contact" onclick="scrollToId('contact')">Contact</a></li>
+    </ul>
+    <div class="right-controls">
+      <div id="userBadge" class="user-badge" style="display:none" onclick="showUserProfile()">
+        <i class="fas fa-user"></i>
+        <span id="userName">User</span>
+      </div>
+      <select id="langSelect">
+        <option>English</option>
+        <option>Hindi</option>
+        <option>Punjabi</option>
+        <option>Marathi</option>
+        <option>Bengali</option>
+        <option>Tamil</option>
+        <option>Telugu</option>
+        <option>Gujarati</option>
+        <option>Kannada</option>
+        <option>Urdu</option>
+      </select>
+      <button class="btn btn-outline" onclick="openModal('createAccount')">Create account</button>
+      <button class="btn btn-gold" onclick="scrollToId('browse')">Start browsing</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ACTIVE USERS COUNTER -->
+<div id="activeUsers" class="active-users">
+  <i class="fas fa-users users-icon"></i>
+  <span id="activeUsersCount">0</span> users online
+</div>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1 class="hero-title">Rent anything in India, earn commission as a 3rd‑party platform.</h1>
+      <p class="hero-text">
+        SeakRent connects owners and renters across all Indian states. You only manage the platform,
+        verification and commission – no need to own any product yourself.[web:122][web:126]
+      </p>
+      <div class="tag-row">
+        <span class="tag"><i class="fas fa-location-dot"></i>&nbsp;All India · focus on Delhi / Sant Nagar / Burari</span>
+        <span class="tag"><i class="fas fa-indian-rupee-sign"></i>&nbsp;UPI for fees & commission: 9318486453@fam</span>
+        <span class="tag"><i class="fas fa-phone"></i>&nbsp;Support: +91‑9318486453 · pt700232@gmail.com</span>
+      </div>
+      <button class="btn btn-gold" onclick="scrollToId('pricing')">View commission plans</button>
+      <button class="btn btn-outline" onclick="scrollToId('browse')">Preview marketplace</button>
+      <button class="btn btn-green" onclick="openUploadSection()" style="margin-left:8px"><i class="fas fa-plus"></i> Upload Product</button>
+    </div>
+    <div class="hero-card">
+      <strong>Quick snapshot (demo)</strong>
+      <div class="hero-stat"><span>Owners registered</span><span id="ownerCount">50+</span></div>
+      <div class="hero-stat"><span>Active rental ads</span><span id="adCount">200+</span></div>
+      <div class="hero-stat"><span>Avg. commission / deal</span><span>₹150</span></div>
+      <div class="hero-stat"><span>Verified users</span><span id="verifiedCount">120+</span></div>
+      <div class="hero-stat"><span>Active rentals</span><span id="activeRentals">15+</span></div>
+      <p style="margin-top:6px;font-size:11px;color:#9ca3af;">
+        Commission model: Free 20% · Silver 15% · Gold 10% on rent. You keep the "take rate",
+        owners receive the rest directly via UPI.[web:130][web:128]
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT US -->
+<section id="about">
+  <div class="container">
+    <h2 class="section-title">About SeakRent</h2>
+    <p class="section-sub">Connecting owners and renters across India with trust and transparency.</p>
+    
+    <div class="about-grid">
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Our Mission</h3>
+        <p class="small" style="margin-bottom:12px;">
+          SeakRent was founded with a simple mission: to make renting anything in India as easy as buying online. 
+          We provide a trusted platform where owners can earn from their idle assets and renters can access what they need without ownership costs.
+        </p>
+        <h3 style="margin-bottom:6px;">Real Payment Processing</h3>
+        <ul class="small" style="padding-left:16px;margin-bottom:12px;">
+          <li>Payments are processed in real-time via UPI</li>
+          <li>Rent status shows "Pending" until payment received</li>
+          <li>Automatic verification when payment confirmed</li>
+          <li>Secure transaction tracking for all rentals</li>
+          <li>Real-time user activity monitoring</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Our Team</h3>
+        <p class="small" style="margin-bottom:12px;">
+          Based in Delhi with focus on Sant Nagar and Burari, our team is dedicated to building India's most trusted rental marketplace.
+        </p>
+        
+        <div class="team-member">
+          <div class="team-avatar">PL</div>
+          <div class="team-info">
+            <div><strong>Palak</strong></div>
+            <div class="team-role">Founder & CEO</div>
+          </div>
+          <div class="small">+91-9318486453</div>
+        </div>
+        
+        <div class="team-member">
+          <div class="team-avatar">SR</div>
+          <div class="team-info">
+            <div><strong>Support Team</strong></div>
+            <div class="team-role">Customer Support</div>
+          </div>
+          <div class="small">pt700232@gmail.com</div>
+        </div>
+        
+        <div class="team-member">
+          <div class="team-avatar">UPI</div>
+          <div class="team-info">
+            <div><strong>Payment Gateway</strong></div>
+            <div class="team-role">Official UPI ID</div>
+          </div>
+          <div class="small">9318486453@fam</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <h2 class="section-title">Plans & Commission</h2>
+    <p class="section-sub">Simple commission‑based revenue model for an all‑India rental marketplace.[web:129]</p>
+
+    <div class="plans">
+      <div class="plan">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">₹0</div>
+        <p class="small">Good for testing · max 3 listings per owner.</p>
+        <ul>
+          <li>Rent commission: 20%</li>
+          <li>Sale commission: 5%</li>
+          <li>Basic owner dashboard</li>
+          <li>Manual verification</li>
+        </ul>
+        <button class="btn btn-outline plan-btn" onclick="selectPlan('free')">Select Free Plan</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Silver</div>
+        <div class="plan-price">₹149</div>
+        <p class="small">Up to 25 listings · better ranking in state search.</p>
+        <ul>
+          <li>Rent commission: 15%</li>
+          <li>Sale commission: 3%</li>
+          <li>Priority manual verification</li>
+          <li>Featured listing badge</li>
+        </ul>
+        <button class="btn btn-gold plan-btn" onclick="selectPlan('silver')">Upgrade to Silver</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Gold<span class="badge">Most used</span></div>
+        <div class="plan-price">₹249</div>
+        <p class="small">Unlimited listings across India.</p>
+        <ul>
+          <li>Rent commission: 10%</li>
+          <li>Sale commission: 1%</li>
+          <li>Top placement in state/city results</li>
+          <li>Premium support & verification</li>
+        </ul>
+        <button class="btn btn-green plan-btn" onclick="selectPlan('gold')">Upgrade to Gold</button>
+      </div>
+    </div>
+    
+    <!-- Payment Verification Section -->
+    <div style="margin-top:40px">
+      <h3 style="margin-bottom:12px;">Payment Verification Status</h3>
+      <div id="verificationStatus" class="verification-status status-pending">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <i class="fas fa-shield-alt" style="color:#fbbf24"></i>
+          <strong>Payment Verification Required</strong>
+        </div>
+        <p class="small" style="margin-bottom:8px;">
+          Only genuine payment screenshots to <strong>9318486453@fam</strong> are accepted.
+          Fake or edited screenshots will be automatically rejected by our AI system.
+        </p>
+        <button class="btn btn-gold" onclick="openModal('paymentVerification')"><i class="fas fa-check-circle"></i> Verify Payment</button>
+      </div>
+      
+      <div class="verification-steps">
+        <div class="verification-step">
+          <div class="step-icon step-complete"><i class="fas fa-check"></i></div>
+          <div style="flex:1">
+            <div><strong>Step 1: Make Payment</strong></div>
+            <div class="small">Pay via UPI: 9318486453@fam only</div>
+          </div>
+        </div>
+        
+        <div class="verification-step">
+          <div class="step-icon step-pending"><i class="fas fa-clock"></i></div>
+          <div style="flex:1">
+            <div><strong>Step 2: Submit Genuine Screenshot</strong></div>
+            <div class="small">Upload real payment screenshot (AI verified)</div>
+          </div>
+        </div>
+        
+        <div class="verification-step">
+          <div class="step-icon step-pending"><i class="fas fa-clock"></i></div>
+          <div style="flex:1">
+            <div><strong>Step 3: Advanced Verification</strong></div>
+            <div class="small">Our system verifies screenshot authenticity</div>
+          </div>
+        </div>
+        
+        <div class="verification-step">
+          <div class="step-icon step-pending"><i class="fas fa-clock"></i></div>
+          <div style="flex:1">
+            <div><strong>Step 4: Account Upgraded</strong></div>
+            <div class="small">Get premium features activated</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UPLOAD PRODUCT SECTION -->
+<section id="upload" class="upload-section">
+  <div class="container">
+    <h2 class="section-title">Upload Your Product</h2>
+    <p class="section-sub">List your item for rent across India. Reach thousands of potential customers.</p>
+    
+    <div class="upload-grid">
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Product Details</h3>
+        <div class="form-group">
+          <label>Product Title *</label>
+          <input id="productTitle" placeholder="e.g., 1.5 Ton Inverter AC">
+        </div>
+        <div class="form-group">
+          <label>Description *</label>
+          <textarea id="productDesc" placeholder="Describe your product..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Daily Rent (₹) *</label>
+          <input id="productPrice" type="number" placeholder="500">
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="productCategory">
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Vehicles">Vehicles</option>
+            <option value="Tools">Tools</option>
+            <option value="Appliances">Appliances</option>
+            <option value="Sports">Sports Equipment</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Location & Images</h3>
+        <div class="form-group">
+          <label>State *</label>
+          <select id="productState">
+            <option value="Delhi">Delhi</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="West Bengal">West Bengal</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Other">Other state</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Area / City *</label>
+          <input id="productArea" placeholder="e.g., Burari, Sant Nagar">
+        </div>
+        <div class="form-group">
+          <label>Upload Image (Demo)</label>
+          <input type="file" id="productImage" accept="image/*" onchange="previewImage()">
+        </div>
+        <div class="upload-preview">
+          <p class="small">Image Preview</p>
+          <img id="imagePreview" src="" alt="Preview">
+          <p id="noPreview" class="small">No image selected</p>
+        </div>
+        <button class="btn btn-gold" style="width:100%;margin-top:12px" onclick="uploadProduct()">List Product for Rent</button>
+        <p id="uploadInfo" class="small" style="margin-top:6px;"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BROWSE / MARKETPLACE PREVIEW -->
+<section id="browse">
+  <div class="container">
+    <h2 class="section-title">Browse sample listings</h2>
+    <p class="section-sub">Owners from any Indian state can list, renters can search by state & keyword (demo front‑end only).[web:125][web:201]</p>
+
+    <div class="search-row">
+      <input id="searchBox" placeholder="Search by title or category…" oninput="renderProducts()">
+      <select id="stateSelect" onchange="renderProducts()">
+        <option value="All">All India</option>
+        <option value="Delhi">Delhi</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Uttar Pradesh">Uttar Pradesh</option>
+        <option value="Karnataka">Karnataka</option>
+        <option value="Tamil Nadu">Tamil Nadu</option>
+        <option value="West Bengal">West Bengal</option>
+        <option value="Gujarat">Gujarat</option>
+        <option value="Rajasthan">Rajasthan</option>
+        <option value="Other">Other state</option>
+      </select>
+      <button class="btn btn-outline" onclick="clearSearch()"><i class="fas fa-times"></i> Clear</button>
+      <span class="small">Showing <span id="countSpan">0</span> items</span>
+    </div>
+
+    <div id="productsGrid" class="products-grid"></div>
+    
+    <!-- Reviews Section -->
+    <div style="margin-top:40px">
+      <h3 style="margin-bottom:12px;">Customer Reviews</h3>
+      <div class="reviews-grid" id="reviewsContainer"></div>
+      <button class="btn btn-outline" onclick="openModal('addReview')" style="margin-top:12px"><i class="fas fa-star"></i> Add Your Review</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <h2 class="section-title">Contact & Support</h2>
+    <p class="section-sub">Use this form for business queries, partnerships or owner onboarding.</p>
+
+    <div class="contact-grid">
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Message form (demo)</h3>
+        <div class="form-group">
+          <label>Name</label>
+          <input id="msgName">
+        </div>
+        <div class="form-group">
+          <label>Phone / Email</label>
+          <input id="msgContact">
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="msgBody"></textarea>
+        </div>
+        <div class="modal-btns">
+          <button class="btn btn-gold" onclick="fakeMessage()">Send message</button>
+          <button class="btn btn-outline" onclick="clearContactForm()">Clear form</button>
+        </div>
+        <p id="msgInfo" class="small" style="margin-top:6px;"></p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:6px;">SeakRent India</h3>
+        <p class="small">
+          HQ focus: Delhi · Sant Nagar · Burari · 110084<br>
+          Phone / WhatsApp: +91‑9318486453<br>
+          Email: pt700232@gmail.com<br>
+          UPI for all fees & commission: <strong>9318486453@fam</strong>
+        </p>
+        <div style="margin:12px 0">
+          <button class="btn btn-outline" onclick="openModal('phoneVerification')"><i class="fas fa-mobile-alt"></i> Verify Phone</button>
+          <button class="btn btn-gold" onclick="openModal('payment')" style="margin-left:8px"><i class="fas fa-rupee-sign"></i> Make Payment</button>
+          <button class="btn btn-green" onclick="openModal('paymentVerification')" style="margin-left:8px"><i class="fas fa-check"></i> Verify Payment</button>
+        </div>
+        <p class="small" style="margin-top:8px;">
+          Disclaimer: SeakRent acts only as a third‑party platform. All rental agreements,
+          product condition and disputes remain between owner and customer. Platform
+          earns commission on successful transactions only.[web:130][web:141]
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>© 2025 SeakRent · All India rental marketplace.</div>
+    <div class="footer-links">
+      <a href="#home" onclick="scrollToId('home')">Home</a>
+      <a href="#about" onclick="scrollToId('about')">About Us</a>
+      <a href="#pricing" onclick="scrollToId('pricing')">Pricing</a>
+      <a href="#upload" onclick="openUploadSection()">Upload</a>
+      <a href="#contact" onclick="scrollToId('contact')">Contact</a>
+      <a onclick="openModal('privacy')">Privacy</a>
+      <a onclick="openModal('terms')">Terms</a>
+    </div>
+    <div>UPI: 9318486453@fam · Support: +91‑9318486453</div>
+  </div>
+</footer>
+
+<!-- CREATE ACCOUNT MODAL -->
+<div id="createAccountModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Create account (demo)</h3>
+      <span class="close" onclick="closeModal('createAccountModal')">&times;</span>
+    </div>
+    <p class="small" style="margin-bottom:6px;">
+      This is a front‑end preview only. Accounts are stored in your browser (localStorage),
+      not on a real server.[web:107][web:169]
+    </p>
+    <div class="form-group">
+      <label>Full name *</label>
+      <input id="accName">
+    </div>
+    <div class="form-group">
+      <label>Phone Number *</label>
+      <input id="accPhone" placeholder="+91XXXXXXXXXX" type="tel">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input id="accEmail" type="email" placeholder="optional">
+    </div>
+    <div class="form-group">
+      <label>State</label>
+      <select id="accState">
+        <option>Delhi</option>
+        <option>Maharashtra</option>
+        <option>Uttar Pradesh</option>
+        <option>Karnataka</option>
+        <option>Tamil Nadu</option>
+        <option>West Bengal</option>
+        <option>Gujarat</option>
+        <option>Rajasthan</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Role</label>
+      <select id="accRole">
+        <option value="owner">Owner (rent out items)</option>
+        <option value="customer">Customer (rent items)</option>
+        <option value="both">Both</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-gold" onclick="saveAccount()">Create account</button>
+      <button class="btn btn-outline" onclick="closeModal('createAccountModal')">Cancel</button>
+    </div>
+    <p id="accInfo" class="small" style="margin-top:6px;"></p>
+  </div>
+</div>
+
+<!-- PHONE VERIFICATION MODAL -->
+<div id="phoneVerificationModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Phone Verification</h3>
+      <span class="close" onclick="closeModal('phoneVerificationModal')">&times;</span>
+    </div>
+    <p class="small" style="margin-bottom:6px;">
+      Verify your phone number to access all features. You'll receive a 6-digit OTP.
+    </p>
+    <div class="form-group">
+      <label>Phone Number *</label>
+      <input id="verifyPhone" placeholder="+91XXXXXXXXXX" type="tel">
+    </div>
+    <div class="form-group" id="otpSection" style="display:none">
+      <label>Enter OTP *</label>
+      <input id="verifyOtp" placeholder="6 digit code" maxlength="6">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-gold" id="verifyBtn" onclick="sendOtp()">Send OTP</button>
+      <button class="btn btn-outline" onclick="closeModal('phoneVerificationModal')">Cancel</button>
+    </div>
+    <p id="verifyInfo" class="small" style="margin-top:6px;"></p>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Make Payment</h3>
+      <span class="close" onclick="closeModal('paymentModal')">&times;</span>
+    </div>
+    <p class="small" style="margin-bottom:6px;">
+      Select payment method and plan. After successful payment, your account will be upgraded automatically.
+    </p>
+    
+    <div class="form-group">
+      <label>Select Plan *</label>
+      <select id="paymentPlan" onchange="updatePaymentAmount()">
+        <option value="silver" data-amount="149">Silver - ₹149</option>
+        <option value="gold" data-amount="249">Gold - ₹249</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Payment Method *</label>
+      <div class="payment-options">
+        <div class="payment-option" onclick="selectPayment('upi')" id="upiOption">
+          <div class="payment-icon upi-icon"><i class="fas fa-mobile-alt"></i></div>
+          <div>UPI</div>
+        </div>
+        <div class="payment-option" onclick="selectPayment('card')" id="cardOption">
+          <div class="payment-icon card-icon"><i class="fas fa-credit-card"></i></div>
+          <div>Card</div>
+        </div>
+        <div class="payment-option" onclick="selectPayment('netbanking')" id="netbankingOption">
+          <div class="payment-icon netbanking-icon"><i class="fas fa-university"></i></div>
+          <div>Net Banking</div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="paymentDetails" style="display:none">
+      <div class="form-group">
+        <label id="paymentMethodLabel">Payment Details</label>
+        <input id="paymentInput" placeholder="Enter details based on selected method">
+      </div>
+    </div>
+    
+    <div class="modal-btns">
+      <button class="btn btn-green" onclick="initiatePayment()" id="payBtn">Pay ₹149</button>
+      <button class="btn btn-outline" onclick="closeModal('paymentModal')">Cancel</button>
+    </div>
+    <p id="paymentInfo" class="small" style="margin-top:6px;"></p>
+  </div>
+</div>
+
+<!-- RENT PAYMENT MODAL -->
+<div id="rentPaymentModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Complete Rental Payment</h3>
+      <span class="close" onclick="closeModal('rentPaymentModal')">&times;</span>
+    </div>
+    
+    <div class="rent-payment-details">
+      <h4 style="margin-bottom:8px;color:#facc15" id="rentProductTitle">Product Title</h4>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span>Daily Rent:</span>
+        <span style="color:#4ade80;font-weight:bold" id="rentProductPrice">₹0/day</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span>Commission (15%):</span>
+        <span id="rentCommission">₹0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span>Total Payable:</span>
+        <span style="color:#facc15;font-weight:bold" id="rentTotalAmount">₹0</span>
+      </div>
+    </div>
+    
+    <div class="payment-instructions">
+      <h4 style="margin-bottom:8px;color:#3b82f6">Payment Instructions:</h4>
+      
+      <div class="payment-step">
+        <div class="step-number">1</div>
+        <div>Send payment via any UPI app to:</div>
+      </div>
+      
+      <div style="text-align:center;padding:10px;background:#1e3a8a;border-radius:6px;margin:10px 0">
+        <div style="font-size:18px;font-weight:bold;color:#facc15">9318486453@fam</div>
+        <div style="font-size:11px;color:#9ca3af">Official SeakRent UPI ID</div>
+      </div>
+      
+      <div class="payment-step">
+        <div class="step-number">2</div>
+        <div>Enter exact amount: <strong id="paymentExactAmount">₹0</strong></div>
+      </div>
+      
+      <div class="payment-step">
+        <div class="step-number">3</div>
+        <div>Add note: <strong id="paymentNote">Rent-[ID]</strong></div>
+      </div>
+    </div>
+    
+    <div class="payment-timer">
+      <div id="paymentTimer">10:00</div>
+      <div style="font-size:11px;color:#9ca3af">Complete payment before timer ends</div>
+    </div>
+    
+    <div id="paymentStatusSection" class="payment-status status-pending">
+      <i class="fas fa-clock"></i>
+      <span>Waiting for payment confirmation...</span>
+    </div>
+    
+    <div class="modal-btns">
+      <button class="btn btn-green" onclick="checkPaymentStatus()" id="checkPaymentBtn"><i class="fas fa-sync-alt"></i> Check Payment Status</button>
+      <button class="btn btn-outline" onclick="closeModal('rentPaymentModal')">Cancel Rental</button>
+    </div>
+    
+    <p id="rentPaymentInfo" class="small" style="margin-top:6px;text-align:center">
+      Payment will be automatically verified within 2-3 minutes after transaction
+    </p>
+  </div>
+</div>
+
+<!-- PAYMENT VERIFICATION MODAL -->
+<div id="paymentVerificationModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Verify Your Payment</h3>
+      <span class="close" onclick="closeModal('paymentVerificationModal')">&times;</span>
+    </div>
+    
+    <div class="payment-guidelines">
+      <h4 style="margin-bottom:8px;color:#facc15">Important Guidelines:</h4>
+      <div class="guideline-item">
+        <div class="guideline-icon"><i class="fas fa-check-circle"></i></div>
+        <div>Only genuine payment screenshots to <strong>9318486453@fam</strong> are accepted</div>
+      </div>
+      <div class="guideline-item">
+        <div class="guideline-icon"><i class="fas fa-times-circle"></i></div>
+        <div>Fake, edited, or other UPI IDs will be rejected automatically</div>
+      </div>
+      <div class="guideline-item">
+        <div class="guideline-icon"><i class="fas fa-shield-alt"></i></div>
+        <div>Our AI system verifies screenshot authenticity</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Transaction ID / UTR Number *</label>
+      <input id="transactionId" placeholder="Enter transaction reference">
+    </div>
+    
+    <div class="form-group">
+      <label>Amount Paid *</label>
+      <select id="paidAmount">
+        <option value="149">₹149 (Silver Plan)</option>
+        <option value="249">₹249 (Gold Plan)</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Payment Date *</label>
+      <input id="paymentDate" type="date">
+    </div>
+    
+    <div class="form-group">
+      <label>Upload Payment Screenshot *</label>
+      <input type="file" id="paymentScreenshot" accept="image/*" onchange="validatePaymentScreenshot(this)">
+      <div class="screenshot-requirements">
+        <i class="fas fa-info-circle"></i> Screenshot must show payment to 9318486453@fam with amount ₹149 or ₹249
+      </div>
+    </div>
+    
+    <div class="upload-preview" style="margin-bottom:12px;">
+      <p class="small">Payment Proof Preview</p>
+      <img id="paymentPreview" src="" alt="Payment Preview">
+      <p id="noPaymentPreview" class="small">No screenshot selected</p>
+    </div>
+    
+    <!-- Validation Results -->
+    <div id="validationResults" class="validation-results" style="display:none">
+      <h4 style="margin-bottom:8px;">Screenshot Validation:</h4>
+      <div id="validationList"></div>
+    </div>
+    
+    <div class="modal-btns">
+      <button class="btn btn-green" onclick="submitPaymentVerification()" id="submitVerifyBtn">Submit for Verification</button>
+      <button class="btn btn-outline" onclick="closeModal('paymentVerificationModal')">Cancel</button>
+    </div>
+    <p id="paymentVerifyInfo" class="small" style="margin-top:6px;"></p>
+  </div>
+</div>
+
+<!-- ADD REVIEW MODAL -->
+<div id="addReviewModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Review</h3>
+      <span class="close" onclick="closeModal('addReviewModal')">&times;</span>
+    </div>
+    <div class="form-group">
+      <label>Your Name *</label>
+      <input id="reviewName">
+    </div>
+    <div class="form-group">
+      <label>Rating *</label>
+      <div style="font-size:20px;color:#9ca3af">
+        <i class="fas fa-star" onclick="setRating(1)" id="star1"></i>
+        <i class="fas fa-star" onclick="setRating(2)" id="star2"></i>
+        <i class="fas fa-star" onclick="setRating(3)" id="star3"></i>
+        <i class="fas fa-star" onclick="setRating(4)" id="star4"></i>
+        <i class="fas fa-star" onclick="setRating(5)" id="star5"></i>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Your Review *</label>
+      <textarea id="reviewText" placeholder="Share your experience..."></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-gold" onclick="submitReview()">Submit Review</button>
+      <button class="btn btn-outline" onclick="closeModal('addReviewModal')">Cancel</button>
+    </div>
+    <p id="reviewInfo" class="small" style="margin-top:6px;"></p>
+  </div>
+</div>
+
+<!-- TERMS MODAL -->
+<div id="termsModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Terms & Conditions</h3>
+      <span class="close" onclick="closeModal('termsModal')">&times;</span>
+    </div>
+    <p class="small">
+      <strong>SeakRent Platform Terms</strong><br><br>
+      1. SeakRent is a third-party platform connecting owners and renters.<br>
+      2. We charge commission on successful transactions only.<br>
+      3. Users are responsible for product condition and rental agreements.<br>
+      4. Verified users get priority in search results.<br>
+      5. Payments should be made through official UPI: 9318486453@fam only.<br>
+      6. Account upgrades require genuine payment verification.<br>
+      7. Fake or edited payment screenshots will result in account suspension.<br>
+      8. No refunds for premium plans after verification.<br><br>
+      By using SeakRent, you agree to these terms.
+    </p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('termsModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div id="privacyModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Privacy Policy</h3>
+      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+    </div>
+    <p class="small">
+      <strong>SeakRent Privacy Policy</strong><br><br>
+      1. We collect only necessary information for platform operation.<br>
+      2. Phone numbers are used for verification and communication.<br>
+      3. Payment details are not stored on our servers.<br>
+      4. User data is stored locally in browser for demo purposes.<br>
+      5. We don't share personal information with third parties.<br><br>
+      Contact: pt700232@gmail.com for privacy concerns.
+    </p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('privacyModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- USER PROFILE MODAL -->
+<div id="userProfileModal" class="backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Your Profile</h3>
+      <span class="close" onclick="closeModal('userProfileModal')">&times;</span>
+    </div>
+    <div id="profileContent">
+      <!-- Filled by JavaScript -->
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('userProfileModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION -->
+<div id="notification" class="notification">
+  <i class="fas fa-check-circle"></i>
+  <span id="notificationText">Operation successful!</span>
+</div>
+
+<script>
+  // Global variables
+  let currentUser = null;
+  let selectedPaymentMethod = null;
+  let currentRating = 0;
+  let demoOtp = "123456";
+  let screenshotValid = false;
+  let screenshotValidationResults = [];
+  let activeUsers = 0;
+  let currentRental = null;
+  let paymentTimerInterval = null;
+  let paymentTimerSeconds = 600;
+  let activeRentals = [];
+  
+  // Sample products with reviews
+  let products = [
+    {id: 1, title: '1.5 Ton Inverter AC – daily rent', price: 600, state: 'Delhi', area: 'Burari', category: 'Electronics', reviews: [
+      {name: 'Rahul Sharma', rating: 4, text: 'Good AC, cooling was perfect for Delhi heat.', date: '2025-01-15'},
+      {name: 'Priya Singh', rating: 5, text: 'Owner was punctual and AC worked great.', date: '2025-02-10'}
+    ]},
+    {id: 2, title: 'Wooden double bed with mattress', price: 350, state: 'Delhi', area: 'Sant Nagar', category: 'Furniture', reviews: [
+      {name: 'Amit Kumar', rating: 3, text: 'Bed was comfortable but delivery was delayed.', date: '2025-01-20'}
+    ]},
+    {id: 3, title: 'Scooter for short city trips', price: 400, state: 'Maharashtra', area: 'Mumbai', category: 'Vehicles', reviews: [
+      {name: 'Sneha Patel', rating: 5, text: 'Perfect condition scooter, great for Mumbai roads.', date: '2025-02-05'},
+      {name: 'Raj Malhotra', rating: 4, text: 'Good service, will rent again.', date: '2025-02-18'}
+    ]},
+    {id: 4, title: 'Generator 2kVA – event use', price: 900, state: 'Uttar Pradesh', area: 'Lucknow', category: 'Tools', reviews: []},
+    {id: 5, title: 'DSLR camera with lens', price: 800, state: 'Karnataka', area: 'Bengaluru', category: 'Electronics', reviews: [
+      {name: 'Ananya Reddy', rating: 5, text: 'Excellent camera for professional photography.', date: '2025-01-30'}
+    ]}
+  ];
+  
+  // Reviews data
+  let allReviews = [
+    {name: 'Vikram Joshi', rating: 5, text: 'Great platform! Rented a camera for my trip.', date: '2025-03-01'},
+    {name: 'Neha Gupta', rating: 4, text: 'Easy to use interface. Found furniture quickly.', date: '2025-02-28'},
+    {name: 'Rohan Mehta', rating: 5, text: 'Verified owner, smooth transaction. Recommended!', date: '2025-02-25'},
+    {name: 'Simran Kaur', rating: 4, text: 'Good customer support. Helped me resolve an issue.', date: '2025-02-20'}
+  ];
+  
+  // Initialize on load
+  document.addEventListener('DOMContentLoaded', function() {
+    checkUserLogin();
+    renderProducts();
+    renderReviews();
+    updateStats();
+    updateVerificationStatus();
+    updateActiveUsers();
+    loadActiveRentals();
+    
+    // Set today's date for payment verification
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('paymentDate').value = today;
+    
+    // Make all buttons clickable
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          this.style.transform = '';
+        }, 150);
+      });
+    });
+    
+    // Language selector change
+    document.getElementById('langSelect').addEventListener('change', function() {
+      showNotification('Language changed to ' + this.value);
+    });
+    
+    // Simulate real-time user activity
+    simulateRealTimeActivity();
+  });
+  
+  // ============ SCROLL FUNCTIONS ============
+  function scrollToId(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      // Show all sections first
+      document.querySelectorAll('section').forEach(section => {
+        section.style.display = 'block';
+      });
+      document.getElementById('upload').classList.remove('upload-active');
+      
+      // Scroll to section
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+  
+  function openUploadSection() {
+    document.querySelectorAll('section').forEach(section => {
+      section.style.display = 'none';
+    });
+    document.getElementById('upload').classList.add('upload-active');
+    scrollToId('upload');
+  }
+  
+  // ============ MODAL FUNCTIONS ============
+  function openModal(modalType) {
+    let modalId = '';
+    
+    switch (modalType) {
+      case 'createAccount':
+        modalId = 'createAccountModal';
+        break;
+      case 'phoneVerification':
+        modalId = 'phoneVerificationModal';
+        break;
+      case 'payment':
+        if (!currentUser) {
+          showNotification('Please create an account first', true);
+          openModal('createAccount');
+          return;
+        }
+        modalId = 'paymentModal';
+        break;
+      case 'rentPayment':
+        modalId = 'rentPaymentModal';
+        break;
+      case 'paymentVerification':
+        if (!currentUser) {
+          showNotification('Please create an account first', true);
+          openModal('createAccount');
+          return;
+        }
+        modalId = 'paymentVerificationModal';
+        break;
+      case 'addReview':
+        modalId = 'addReviewModal';
+        break;
+      case 'terms':
+        modalId = 'termsModal';
+        break;
+      case 'privacy':
+        modalId = 'privacyModal';
+        break;
+    }
+    
+    if (modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+    }
+  }
+  
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+    
+    // Reset form states
+    if (modalId === 'addReviewModal') {
+      resetRating();
+      document.getElementById('reviewName').value = '';
+      document.getElementById('reviewText').value = '';
+      document.getElementById('reviewInfo').textContent = '';
+    }
+    
+    if (modalId === 'paymentModal') {
+      selectedPaymentMethod = null;
+      document.querySelectorAll('.payment-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      document.getElementById('paymentDetails').style.display = 'none';
+      document.getElementById('paymentInfo').textContent = '';
+    }
+    
+    if (modalId === 'rentPaymentModal') {
+      if (paymentTimerInterval) {
+        clearInterval(paymentTimerInterval);
+        paymentTimerInterval = null;
+      }
+      paymentTimerSeconds = 600;
+      document.getElementById('paymentStatusSection').className = 'payment-status status-pending';
+      document.getElementById('paymentStatusSection').innerHTML = '<i class="fas fa-clock"></i><span>Waiting for payment confirmation...</span>';
+      document.getElementById('checkPaymentBtn').innerHTML = '<i class="fas fa-sync-alt"></i> Check Payment Status';
+      document.getElementById('checkPaymentBtn').disabled = false;
+    }
+    
+    if (modalId === 'paymentVerificationModal') {
+      document.getElementById('paymentPreview').style.display = 'none';
+      document.getElementById('noPaymentPreview').style.display = 'block';
+      document.getElementById('paymentVerifyInfo').textContent = '';
+      document.getElementById('validationResults').style.display = 'none';
+      document.getElementById('validationList').innerHTML = '';
+      screenshotValid = false;
+      screenshotValidationResults = [];
+    }
+  }
+  
+  // ============ NOTIFICATION ============
+  function showNotification(message, isError = false, isWarning = false, isInfo = false) {
+    const notification = document.getElementById('notification');
+    const text = document.getElementById('notificationText');
+    
+    text.textContent = message;
+    
+    if (isError) {
+      notification.className = 'notification error';
+    } else if (isWarning) {
+      notification.className = 'notification warning';
+    } else if (isInfo) {
+      notification.className = 'notification info';
+    } else {
+      notification.className = 'notification';
+    }
+    
+    notification.style.display = 'flex';
+    
+    setTimeout(() => {
+      notification.style.display = 'none';
+    }, 3000);
+  }
+  
+  // ============ USER FUNCTIONS ============
+  function checkUserLogin() {
+    const key = 'seakrent_current_user';
+    try {
+      const user = localStorage.getItem(key);
+      if (user) {
+        currentUser = JSON.parse(user);
+        showUserBadge();
+      }
+    } catch(e) {
+      console.log('No user logged in');
+    }
+  }
+  
+  function showUserBadge() {
+    if (currentUser) {
+      const badge = document.getElementById('userBadge');
+      const userName = document.getElementById('userName');
+      userName.textContent = currentUser.name.split(' ')[0];
+      badge.style.display = 'flex';
+    }
+  }
+  
+  function showUserProfile() {
+    if (!currentUser) {
+      showNotification('Please create an account first', true);
+      openModal('createAccount');
+      return;
+    }
+    
+    const modal = document.getElementById('userProfileModal');
+    const content = document.getElementById('profileContent');
+    
+    const userRentals = activeRentals.filter(r => r.userId === currentUser.phone);
+    
+    let html = `
+      <p><strong>Name:</strong> ${currentUser.name}</p>
+      <p><strong>Phone:</strong> ${currentUser.phone || 'Not provided'}</p>
+      <p><strong>Email:</strong> ${currentUser.email || 'Not provided'}</p>
+      <p><strong>State:</strong> ${currentUser.state}</p>
+      <p><strong>Role:</strong> ${currentUser.role}</p>
+      <p><strong>Plan:</strong> <span style="color:#facc15">${currentUser.plan || 'Free'}</span></p>
+      <p><strong>Verification:</strong> ${currentUser.verified ? '<span style="color:#22c55e">Verified</span>' : '<span style="color:#ef4444">Not Verified</span>'}</p>
+      <p><strong>Payment Status:</strong> ${currentUser.paymentVerified ? '<span style="color:#22c55e">Verified</span>' : '<span style="color:#ef4444">Pending</span>'}</p>
+      <p><strong>Active Rentals:</strong> ${userRentals.length}</p>
+      <p><strong>Joined:</strong> ${currentUser.joinDate || 'Recently'}</p>
+    `;
+    
+    if (userRentals.length > 0) {
+      html += `<div style="margin-top:10px;border-top:1px solid #27272f;padding-top:10px;">
+                <strong>Your Active Rentals:</strong>`;
+      userRentals.forEach(rental => {
+        const statusColor = rental.status === 'success' ? '#22c55e' : 
+                           rental.status === 'pending' ? '#fbbf24' : '#ef4444';
+        html += `<div style="font-size:11px;margin-top:4px;">
+                  ${rental.productTitle} - <span style="color:${statusColor}">${rental.status.toUpperCase()}</span>
+                </div>`;
+      });
+      html += `</div>`;
+    }
+    
+    content.innerHTML = html;
+    modal.style.display = 'flex';
+  }
+  
+  // ============ ACCOUNT FUNCTIONS ============
+  function saveAccount() {
+    const name = document.getElementById('accName').value.trim();
+    const phone = document.getElementById('accPhone').value.trim();
+    const email = document.getElementById('accEmail').value.trim();
+    const state = document.getElementById('accState').value;
+    const role = document.getElementById('accRole').value;
+    
+    if (!name || !phone) {
+      document.getElementById('accInfo').innerText = 'Name and phone are required.';
+      document.getElementById('accInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    // Save current user
+    currentUser = {
+      name,
+      phone,
+      email,
+      state,
+      role,
+      plan: 'Free',
+      verified: false,
+      paymentVerified: false,
+      joinDate: new Date().toLocaleDateString()
+    };
+    
+    const key = 'seakrent_current_user';
+    localStorage.setItem(key, JSON.stringify(currentUser));
+    
+    // Save to accounts list
+    const accountsKey = 'seakrent_demo_accounts';
+    let accounts = [];
+    try {
+      const raw = localStorage.getItem(accountsKey);
+      if (raw) accounts = JSON.parse(raw);
+    } catch(e) {
+      accounts = [];
+    }
+    
+    accounts.push(currentUser);
+    localStorage.setItem(accountsKey, JSON.stringify(accounts));
+    
+    document.getElementById('accInfo').innerText = 'Account created successfully!';
+    document.getElementById('accInfo').style.color = '#22c55e';
+    
+    showUserBadge();
+    showNotification('Account created successfully!');
+    updateStats();
+    
+    setTimeout(() => {
+      closeModal('createAccountModal');
+      openModal('phoneVerification');
+    }, 1500);
+  }
+  
+  // ============ PHONE VERIFICATION ============
+  function sendOtp() {
+    const phone = document.getElementById('verifyPhone').value.trim();
+    const verifyBtn = document.getElementById('verifyBtn');
+    
+    if (!phone) {
+      document.getElementById('verifyInfo').innerText = 'Please enter phone number.';
+      document.getElementById('verifyInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    document.getElementById('verifyInfo').innerText = 'OTP sent to ' + phone + ' (Demo OTP: 123456)';
+    document.getElementById('verifyInfo').style.color = '#22c55e';
+    document.getElementById('otpSection').style.display = 'block';
+    verifyBtn.textContent = 'Verify OTP';
+    verifyBtn.onclick = verifyOtp;
+  }
+  
+  function verifyOtp() {
+    const otp = document.getElementById('verifyOtp').value.trim();
+    
+    if (otp === demoOtp) {
+      if (currentUser) {
+        currentUser.verified = true;
+        localStorage.setItem('seakrent_current_user', JSON.stringify(currentUser));
+      }
+      document.getElementById('verifyInfo').innerText = 'Phone verified successfully!';
+      document.getElementById('verifyInfo').style.color = '#22c55e';
+      showNotification('Phone verified successfully!');
+      
+      setTimeout(() => {
+        closeModal('phoneVerificationModal');
+      }, 1500);
+    } else {
+      document.getElementById('verifyInfo').innerText = 'Invalid OTP. Try again.';
+      document.getElementById('verifyInfo').style.color = '#ef4444';
+    }
+  }
+  
+  // ============ PRODUCT FUNCTIONS ============
+  function renderProducts() {
+    const searchBox = document.getElementById('searchBox');
+    const stateSelect = document.getElementById('stateSelect');
+    const grid = document.getElementById('productsGrid');
+    
+    const searchTerm = searchBox.value.toLowerCase();
+    const selectedState = stateSelect.value;
+    
+    let filteredProducts = products.filter(product => {
+      const matchesSearch = product.title.toLowerCase().includes(searchTerm) ||
+                           product.category.toLowerCase().includes(searchTerm);
+      const matchesState = selectedState === 'All' || product.state === selectedState;
+      
+      return matchesSearch && matchesState;
+    });
+    
+    document.getElementById('countSpan').textContent = filteredProducts.length;
+    
+    let html = '';
+    filteredProducts.forEach(product => {
+      const totalReviews = product.reviews.length;
+      const avgRating = totalReviews > 0 ? 
+        (product.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1) : 'No reviews';
+      
+      const statuses = ['pending', 'success', 'failed'];
+      const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+      const statusText = randomStatus === 'pending' ? 'Payment Pending' :
+                        randomStatus === 'success' ? 'Rented Successfully' : 'Payment Failed';
+      const statusClass = randomStatus === 'pending' ? 'rent-pending' :
+                         randomStatus === 'success' ? 'rent-success' : 'rent-failed';
+      
+      html += `
+      <div class="product">
+        <div class="product-head">
+          <div class="product-title">${product.title}</div>
+          <div class="product-price">₹${product.price}/day</div>
+        </div>
+        <div class="product-meta">
+          <i class="fas fa-map-marker-alt"></i> ${product.area}, ${product.state} | 
+          <i class="fas fa-tag"></i> ${product.category}
+        </div>
+        <div class="review-stars">
+          ${getStarRating(product.reviews)}
+          <span style="color:#9ca3af; font-size:10px;">(${totalReviews} reviews)</span>
+        </div>
+        <div class="rent-status ${statusClass}">${statusText}</div>
+        <div class="product-actions">
+          <button class="btn btn-outline" style="font-size:10px; padding:4px 8px;" onclick="viewProduct(${product.id})">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button class="btn btn-gold" style="font-size:10px; padding:4px 8px;" onclick="rentProduct(${product.id})">
+            <i class="fas fa-shopping-cart"></i> Rent Now
+          </button>
+          <button class="btn btn-green" style="font-size:10px; padding:4px 8px;" onclick="addToWishlist(${product.id})">
+            <i class="fas fa-heart"></i> Save
+          </button>
+        </div>
+      </div>
+      `;
+    });
+    
+    grid.innerHTML = html || '<p style="text-align:center;color:#9ca3af;grid-column:1/-1">No products found. Try different search criteria.</p>';
+  }
+  
+  function getStarRating(reviews) {
+    if (reviews.length === 0) return '★ ★ ★ ★ ★';
+    
+    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= Math.floor(avg)) {
+        stars += '<i class="fas fa-star" style="color:#facc15"></i> ';
+      } else if (i === Math.ceil(avg) && avg % 1 !== 0) {
+        stars += '<i class="fas fa-star-half-alt" style="color:#facc15"></i> ';
+      } else {
+        stars += '<i class="far fa-star" style="color:#9ca3af"></i> ';
+      }
+    }
+    return stars;
+  }
+  
+  function viewProduct(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      alert(`Product Details:\n\nTitle: ${product.title}\nPrice: ₹${product.price}/day\nLocation: ${product.area}, ${product.state}\nCategory: ${product.category}\n\nReviews: ${product.reviews.length}`);
+    }
+  }
+  
+  function rentProduct(productId) {
+    if (!currentUser) {
+      showNotification('Please create an account first', true);
+      openModal('createAccount');
+      return;
+    }
+    
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    
+    currentRental = product;
+    
+    const modal = document.getElementById('rentPaymentModal');
+    document.getElementById('rentProductTitle').textContent = product.title;
+    document.getElementById('rentProductPrice').textContent = `₹${product.price}/day`;
+    
+    const commission = Math.round(product.price * 0.15);
+    const total = product.price + commission;
+    
+    document.getElementById('rentCommission').textContent = `₹${commission}`;
+    document.getElementById('rentTotalAmount').textContent = `₹${total}`;
+    document.getElementById('paymentExactAmount').textContent = `₹${total}`;
+    document.getElementById('paymentNote').textContent = `Rent-${product.id}-${Date.now().toString().slice(-6)}`;
+    
+    modal.style.display = 'flex';
+    
+    startPaymentTimer();
+  }
+  
+  function addToWishlist(productId) {
+    if (!currentUser) {
+      showNotification('Please create an account to save products', true);
+      return;
+    }
+    
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      showNotification(`${product.title} added to wishlist`);
+    }
+  }
+  
+  function clearSearch() {
+    document.getElementById('searchBox').value = '';
+    document.getElementById('stateSelect').value = 'All';
+    renderProducts();
+  }
+  
+  // ============ UPLOAD PRODUCT ============
+  function uploadProduct() {
+    const title = document.getElementById('productTitle').value.trim();
+    const desc = document.getElementById('productDesc').value.trim();
+    const price = document.getElementById('productPrice').value.trim();
+    const category = document.getElementById('productCategory').value;
+    const state = document.getElementById('productState').value;
+    const area = document.getElementById('productArea').value.trim();
+    
+    if (!title || !desc || !price || !area) {
+      document.getElementById('uploadInfo').innerText = 'Please fill all required fields';
+      document.getElementById('uploadInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    const newProduct = {
+      id: products.length + 1,
+      title: title,
+      price: parseInt(price),
+      state: state,
+      area: area,
+      category: category,
+      description: desc,
+      reviews: [],
+      uploadedBy: currentUser ? currentUser.phone : 'guest',
+      date: new Date().toLocaleDateString()
+    };
+    
+    products.push(newProduct);
+    
+    const productsKey = 'seakrent_uploaded_products';
+    let uploadedProducts = [];
+    try {
+      const raw = localStorage.getItem(productsKey);
+      if (raw) uploadedProducts = JSON.parse(raw);
+    } catch(e) {}
+    
+    uploadedProducts.push(newProduct);
+    localStorage.setItem(productsKey, JSON.stringify(uploadedProducts));
+    
+    document.getElementById('uploadInfo').innerText = 'Product listed successfully! It will appear in marketplace shortly.';
+    document.getElementById('uploadInfo').style.color = '#22c55e';
+    
+    showNotification('Product uploaded successfully!');
+    
+    document.getElementById('productTitle').value = '';
+    document.getElementById('productDesc').value = '';
+    document.getElementById('productPrice').value = '';
+    document.getElementById('productArea').value = '';
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('noPreview').style.display = 'block';
+    
+    updateStats();
+    renderProducts();
+  }
+  
+  function previewImage() {
+    const input = document.getElementById('productImage');
+    const preview = document.getElementById('imagePreview');
+    const noPreview = document.getElementById('noPreview');
+    
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        noPreview.style.display = 'none';
+      }
+      
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  
+  // ============ REVIEWS ============
+  function renderReviews() {
+    const container = document.getElementById('reviewsContainer');
+    let html = '';
+    
+    allReviews.forEach(review => {
+      html += `
+      <div class="product" style="margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between;">
+          <strong>${review.name}</strong>
+          <div style="color:#facc15">
+            ${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}
+          </div>
+        </div>
+        <p style="font-size:11px; margin:6px 0;">${review.text}</p>
+        <div style="font-size:10px; color:#9ca3af;">
+          <i class="far fa-calendar"></i> ${review.date}
+        </div>
+      </div>
+      `;
+    });
+    
+    container.innerHTML = html;
+  }
+  
+  function setRating(rating) {
+    currentRating = rating;
+    
+    for (let i = 1; i <= 5; i++) {
+      const star = document.getElementById('star' + i);
+      if (i <= rating) {
+        star.style.color = '#facc15';
+        star.classList.remove('far');
+        star.classList.add('fas');
+      } else {
+        star.style.color = '#9ca3af';
+        star.classList.remove('fas');
+        star.classList.add('far');
+      }
+    }
+  }
+  
+  function resetRating() {
+    currentRating = 0;
+    for (let i = 1; i <= 5; i++) {
+      const star = document.getElementById('star' + i);
+      star.style.color = '#9ca3af';
+      star.classList.remove('fas');
+      star.classList.add('far');
+    }
+  }
+  
+  function submitReview() {
+    const name = document.getElementById('reviewName').value.trim();
+    const text = document.getElementById('reviewText').value.trim();
+    
+    if (!name || !text || currentRating === 0) {
+      document.getElementById('reviewInfo').innerText = 'Please fill all fields and select rating';
+      document.getElementById('reviewInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    const newReview = {
+      name: name,
+      rating: currentRating,
+      text: text,
+      date: new Date().toLocaleDateString()
+    };
+    
+    allReviews.unshift(newReview);
+    localStorage.setItem('seakrent_reviews', JSON.stringify(allReviews));
+    
+    document.getElementById('reviewInfo').innerText = 'Review submitted successfully!';
+    document.getElementById('reviewInfo').style.color = '#22c55e';
+    
+    showNotification('Thank you for your review!');
+    
+    setTimeout(() => {
+      closeModal('addReviewModal');
+      renderReviews();
+    }, 1500);
+  }
+  
+  // ============ PAYMENT FUNCTIONS ============
+  function selectPlan(plan) {
+    if (!currentUser) {
+      showNotification('Please create an account first', true);
+      openModal('createAccount');
+      return;
+    }
+    
+    if (plan === 'free') {
+      currentUser.plan = 'Free';
+      showNotification('Free plan selected successfully');
+    } else {
+      openModal('payment');
+    }
+  }
+  
+  function selectPayment(method) {
+    selectedPaymentMethod = method;
+    
+    document.querySelectorAll('.payment-option').forEach(opt => {
+      opt.classList.remove('selected');
+    });
+    
+    document.getElementById(method + 'Option').classList.add('selected');
+    
+    const detailsDiv = document.getElementById('paymentDetails');
+    const input = document.getElementById('paymentInput');
+    const label = document.getElementById('paymentMethodLabel');
+    
+    detailsDiv.style.display = 'block';
+    
+    switch(method) {
+      case 'upi':
+        label.textContent = 'UPI ID / Phone Number *';
+        input.placeholder = 'Enter your UPI ID or phone number';
+        break;
+      case 'card':
+        label.textContent = 'Card Number *';
+        input.placeholder = 'Enter 16-digit card number';
+        break;
+      case 'netbanking':
+        label.textContent = 'Bank Account Number *';
+        input.placeholder = 'Enter your bank account number';
+        break;
+    }
+  }
+  
+  function updatePaymentAmount() {
+    const select = document.getElementById('paymentPlan');
+    const amount = select.options[select.selectedIndex].getAttribute('data-amount');
+    document.getElementById('payBtn').textContent = `Pay ₹${amount}`;
+  }
+  
+  function initiatePayment() {
+    if (!selectedPaymentMethod) {
+      document.getElementById('paymentInfo').innerText = 'Please select a payment method';
+      document.getElementById('paymentInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    const select = document.getElementById('paymentPlan');
+    const plan = select.value;
+    const amount = select.options[select.selectedIndex].getAttribute('data-amount');
+    
+    document.getElementById('paymentInfo').innerText = `Redirecting to ${selectedPaymentMethod.toUpperCase()} payment gateway for ₹${amount}...`;
+    document.getElementById('paymentInfo').style.color = '#facc15';
+    
+    setTimeout(() => {
+      currentUser.plan = plan.charAt(0).toUpperCase() + plan.slice(1);
+      currentUser.paymentVerified = true;
+      
+      localStorage.setItem('seakrent_current_user', JSON.stringify(currentUser));
+      
+      const accountsKey = 'seakrent_demo_accounts';
+      let accounts = [];
+      try {
+        const raw = localStorage.getItem(accountsKey);
+        if (raw) accounts = JSON.parse(raw);
+      } catch(e) {}
+      
+      const index = accounts.findIndex(acc => acc.phone === currentUser.phone);
+      if (index !== -1) {
+        accounts[index] = currentUser;
+        localStorage.setItem(accountsKey, JSON.stringify(accounts));
+      }
+      
+      document.getElementById('paymentInfo').innerText = `Payment successful! ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan activated.`;
+      document.getElementById('paymentInfo').style.color = '#22c55e';
+      
+      showNotification(`${plan.charAt(0).toUpperCase() + plan.slice(1)} plan activated successfully!`);
+      updateVerificationStatus();
+      
+      setTimeout(() => {
+        closeModal('paymentModal');
+      }, 2000);
+    }, 2000);
+  }
+  
+  // ============ RENT PAYMENT ============
+  function startPaymentTimer() {
+    if (paymentTimerInterval) {
+      clearInterval(paymentTimerInterval);
+    }
+    
+    paymentTimerSeconds = 600;
+    
+    paymentTimerInterval = setInterval(() => {
+      paymentTimerSeconds--;
+      
+      const minutes = Math.floor(paymentTimerSeconds / 60);
+      const seconds = paymentTimerSeconds % 60;
+      
+      document.getElementById('paymentTimer').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+      if (paymentTimerSeconds <= 0) {
+        clearInterval(paymentTimerInterval);
+        document.getElementById('paymentStatusSection').className = 'payment-status status-pending';
+        document.getElementById('paymentStatusSection').innerHTML = 
+          '<i class="fas fa-clock"></i><span>Payment time expired!</span>';
+        document.getElementById('checkPaymentBtn').disabled = true;
+      }
+    }, 1000);
+  }
+  
+  function checkPaymentStatus() {
+    if (!currentRental) return;
+    
+    const statusSection = document.getElementById('paymentStatusSection');
+    const checkBtn = document.getElementById('checkPaymentBtn');
+    
+    const status = Math.random() > 0.5 ? 'success' : 'pending';
+    
+    if (status === 'success') {
+      statusSection.className = 'payment-status status-success';
+      statusSection.innerHTML = '<i class="fas fa-check-circle"></i><span>Payment verified successfully!</span>';
+      checkBtn.innerHTML = '<i class="fas fa-check"></i> Payment Verified';
+      checkBtn.disabled = true;
+      
+      const rental = {
+        id: Date.now(),
+        productId: currentRental.id,
+        productTitle: currentRental.title,
+        userId: currentUser.phone,
+        userName: currentUser.name,
+        amount: currentRental.price,
+        date: new Date().toLocaleDateString(),
+        status: 'success'
+      };
+      
+      activeRentals.push(rental);
+      localStorage.setItem('seakrent_active_rentals', JSON.stringify(activeRentals));
+      
+      showNotification('Rental payment successful! Product booked.');
+      
+      setTimeout(() => {
+        closeModal('rentPaymentModal');
+      }, 3000);
+      
+    } else {
+      statusSection.innerHTML = '<i class="fas fa-clock"></i><span>Payment still pending. Please complete payment and try again.</span>';
+      showNotification('Payment still pending. Please complete transaction.', false, true);
+    }
+  }
+  
+  // ============ PAYMENT VERIFICATION ============
+  function validatePaymentScreenshot(input) {
+    const preview = document.getElementById('paymentPreview');
+    const noPreview = document.getElementById('noPaymentPreview');
+    const validationDiv = document.getElementById('validationResults');
+    const validationList = document.getElementById('validationList');
+    
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        noPreview.style.display = 'none';
+        
+        simulateAIValidation();
+      }
+      
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  
+  function simulateAIValidation() {
+    const validationDiv = document.getElementById('validationResults');
+    const validationList = document.getElementById('validationList');
+    
+    screenshotValid = false;
+    screenshotValidationResults = [];
+    
+    const checks = [
+      {id: 1, name: 'UPI ID Verification', required: '9318486453@fam', result: Math.random() > 0.3},
+      {id: 2, name: 'Amount Validation', required: '₹149 or ₹249', result: Math.random() > 0.3},
+      {id: 3, name: 'Screenshot Authenticity', required: 'No edits detected', result: Math.random() > 0.4},
+      {id: 4, name: 'Transaction Timestamp', required: 'Recent transaction', result: Math.random() > 0.2},
+      {id: 5, name: 'Bank/UPI App Logo', required: 'Genuine app interface', result: Math.random() > 0.3}
+    ];
+    
+    let html = '';
+    let allPassed = true;
+    
+    checks.forEach(check => {
+      const icon = check.result ? 'fa-check-circle' : 'fa-times-circle';
+      const color = check.result ? '#22c55e' : '#ef4444';
+      const text = check.result ? 'PASS' : 'FAIL';
+      
+      html += `
+      <div class="validation-item">
+        <i class="fas ${icon}" style="color:${color}"></i>
+        <span>${check.name}</span>
+        <span style="margin-left:auto; font-size:10px; color:${color}">${text}</span>
+      </div>
+      `;
+      
+      if (!check.result) allPassed = false;
+    });
+    
+    validationList.innerHTML = html;
+    validationDiv.style.display = 'block';
+    
+    screenshotValid = allPassed;
+    screenshotValidationResults = checks;
+  }
+  
+  function submitPaymentVerification() {
+    const transactionId = document.getElementById('transactionId').value.trim();
+    const amount = document.getElementById('paidAmount').value;
+    const date = document.getElementById('paymentDate').value;
+    
+    if (!transactionId || !date) {
+      document.getElementById('paymentVerifyInfo').innerText = 'Please fill all required fields';
+      document.getElementById('paymentVerifyInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    if (!screenshotValid) {
+      document.getElementById('paymentVerifyInfo').innerText = 'Screenshot validation failed. Please upload genuine screenshot.';
+      document.getElementById('paymentVerifyInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    if (currentUser) {
+      currentUser.paymentVerified = true;
+      currentUser.plan = amount === '149' ? 'Silver' : 'Gold';
+      currentUser.lastPayment = {
+        transactionId: transactionId,
+        amount: amount,
+        date: date
+      };
+      
+      localStorage.setItem('seakrent_current_user', JSON.stringify(currentUser));
+      
+      const accountsKey = 'seakrent_demo_accounts';
+      let accounts = [];
+      try {
+        const raw = localStorage.getItem(accountsKey);
+        if (raw) accounts = JSON.parse(raw);
+      } catch(e) {}
+      
+      const index = accounts.findIndex(acc => acc.phone === currentUser.phone);
+      if (index !== -1) {
+        accounts[index] = currentUser;
+        localStorage.setItem(accountsKey, JSON.stringify(accounts));
+      }
+      
+      document.getElementById('paymentVerifyInfo').innerText = 'Payment verified successfully! Account upgraded.';
+      document.getElementById('paymentVerifyInfo').style.color = '#22c55e';
+      
+      showNotification('Payment verified! Premium features activated.');
+      
+      updateVerificationStatus();
+      
+      setTimeout(() => {
+        closeModal('paymentVerificationModal');
+      }, 2000);
+    }
+  }
+  
+  // ============ UTILITY FUNCTIONS ============
+  function updateStats() {
+    const accountsKey = 'seakrent_demo_accounts';
+    let accounts = [];
+    try {
+      const raw = localStorage.getItem(accountsKey);
+      if (raw) accounts = JSON.parse(raw);
+    } catch(e) {}
+    
+    const ownerAccounts = accounts.filter(acc => acc.role === 'owner' || acc.role === 'both');
+    document.getElementById('ownerCount').textContent = ownerAccounts.length + '+';
+    
+    const productsKey = 'seakrent_uploaded_products';
+    let uploadedProducts = [];
+    try {
+      const raw = localStorage.getItem(productsKey);
+      if (raw) uploadedProducts = JSON.parse(raw);
+    } catch(e) {}
+    
+    const totalProducts = products.length + uploadedProducts.length;
+    document.getElementById('adCount').textContent = totalProducts + '+';
+    
+    const verifiedUsers = accounts.filter(acc => acc.verified).length;
+    document.getElementById('verifiedCount').textContent = verifiedUsers + '+';
+  }
+  
+  function updateVerificationStatus() {
+    if (currentUser && currentUser.paymentVerified) {
+      const statusDiv = document.getElementById('verificationStatus');
+      statusDiv.className = 'verification-status status-verified';
+      statusDiv.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <i class="fas fa-shield-alt" style="color:#22c55e"></i>
+          <strong>Payment Verified ✓</strong>
+        </div>
+        <p class="small" style="margin-bottom:8px;">
+          Your payment to <strong>9318486453@fam</strong> has been verified successfully.
+          Premium features are now activated.
+        </p>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+          <span style="color:#22c55e"><i class="fas fa-check-circle"></i> Silver Plan Active</span>
+          <button class="btn btn-outline" onclick="openModal('payment')" style="font-size:10px; padding:4px 8px;">Upgrade to Gold</button>
+        </div>
+      `;
+      
+      document.querySelectorAll('.step-pending').forEach(step => {
+        step.className = 'step-icon step-complete';
+        step.innerHTML = '<i class="fas fa-check"></i>';
+      });
+    }
+  }
+  
+  function updateActiveUsers() {
+    activeUsers = Math.floor(Math.random() * 46) + 5;
+    document.getElementById('activeUsersCount').textContent = activeUsers;
+    document.getElementById('activeRentals').textContent = activeRentals.length + '+';
+  }
+  
+  function simulateRealTimeActivity() {
+    setInterval(updateActiveUsers, 30000);
+    
+    setInterval(() => {
+      if (Math.random() > 0.7) {
+        const rentalCount = parseInt(document.getElementById('activeRentals').textContent);
+        if (rentalCount < 50) {
+          document.getElementById('activeRentals').textContent = (rentalCount + 1) + '+';
+        }
+      }
+    }, 45000);
+  }
+  
+  function loadActiveRentals() {
+    try {
+      const raw = localStorage.getItem('seakrent_active_rentals');
+      if (raw) activeRentals = JSON.parse(raw);
+    } catch(e) {
+      activeRentals = [];
+    }
+  }
+  
+  function fakeMessage() {
+    const name = document.getElementById('msgName').value.trim();
+    const contact = document.getElementById('msgContact').value.trim();
+    const body = document.getElementById('msgBody').value.trim();
+    
+    if (!name || !contact || !body) {
+      document.getElementById('msgInfo').innerText = 'Please fill all fields';
+      document.getElementById('msgInfo').style.color = '#ef4444';
+      return;
+    }
+    
+    document.getElementById('msgInfo').innerText = 'Message sent! We\'ll contact you soon at ' + contact;
+    document.getElementById('msgInfo').style.color = '#22c55e';
+    
+    showNotification('Message sent successfully');
+    
+    clearContactForm();
+  }
+  
+  function clearContactForm() {
+    document.getElementById('msgName').value = '';
+    document.getElementById('msgContact').value = '';
+    document.getElementById('msgBody').value = '';
+    document.getElementById('msgInfo').innerText = '';
+  }
+</script>
+</body>
+</html>
